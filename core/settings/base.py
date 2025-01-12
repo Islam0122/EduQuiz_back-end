@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
 
     # > apps <
+    'app.quiz'
 
 ]
 # MIDDLEWARE
@@ -64,7 +65,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
