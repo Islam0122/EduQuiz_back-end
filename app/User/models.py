@@ -1,61 +1,44 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
 
-class UserManager(BaseUserManager):
-    def create_user(self, username, password=None, **extra_fields):
-        if not username:
-            raise ValueError('Поле Username обязательно для заполнения')
-        user = self.model(username=username, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+class User(AbstractUser):
+    fullname = models.CharField(max_length=255, verbose_name="Полное имя")
+    is_allowed = models.BooleanField(default=True, verbose_name="Разрешен")
 
-    def create_superuser(self, username, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('role', User.Role.ADMIN)  # Роль суперпользователя
-        return self.create_user(username, password, **extra_fields)
+    def set_random_password_and_notify(self):
+        """Генерирует временный пароль, устанавливает его и отправляет email"""
+        password = get_random_string(10)  # Генерируем случайный пароль из 10 символов
+        self.set_password(password)  # Устанавливаем хешированный пароль
+        self.save()
 
-class User(AbstractBaseUser, PermissionsMixin):
-    # Определяем роли
-    class Role(models.TextChoices):
-        ADMIN = 'admin', 'Администратор'
-        USER = 'user', 'Пользователь'
+        self.send_welcome_email(password)  # Отправляем email пользователю
 
-    username = models.CharField(
-        max_length=150,
-        unique=True,
-        help_text="Введите уникальное имя пользователя для входа в систему."
-    )
-    fullname = models.CharField(
-        max_length=30,
-        blank=True,
-        help_text="Полное имя пользователя. Это поле не обязательное."
-    )
-    is_allowed = models.BooleanField(
-        default=True,
-        help_text="Отметьте, если пользователь имеет доступ к системе."
-    )
-    is_active = models.BooleanField(
-        default=True,
-        help_text="Если активен, пользователь может войти в систему."
-    )
-    is_staff = models.BooleanField(
-        default=False,
-        help_text="Если отмечено, пользователь является администратором сайта."
-    )
-    role = models.CharField(
-        max_length=10,
-        choices=Role.choices,
-        default=Role.USER,
-        help_text="Роль пользователя в системе."
-    )
-    date_joined = models.DateTimeField(auto_now_add=True)
+    def send_welcome_email(self, password):
+        """Отправляет email пользователю с данными для входа"""
+        if not self.email:
+            return  # Если email нет, не отправляем письмо
 
-    objects = UserManager()
+        subject = 'Добро пожаловать в нашу систему!'
+        message = f'''
+        Привет, {self.username}! 👋
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+        Мы рады приветствовать вас в нашей системе! 🎉
 
-    def __str__(self):
-        return self.username
+        Ваши данные для входа:
+        🔑 Логин: {self.username}
+        🔐 Пароль: {password}
+
+        ⚠️ Не передавайте эти данные третьим лицам!
+
+        Если возникнут вопросы, мы всегда на связи. 🤝
+
+        С уважением,  
+        Команда ClubOfProgg 🚀
+        '''
+        send_mail(subject, message, 'duishobaevislam01@gmail.com', [self.email])
+
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"

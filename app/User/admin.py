@@ -3,20 +3,27 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'fullname', 'role', 'is_allowed', 'is_active', 'is_staff', 'date_joined')
-    search_fields = ('username', 'fullname')
-    list_filter = ('role', 'is_allowed', 'is_active', 'is_staff')
+    list_display = ('username', 'fullname', 'email', 'is_allowed',)
+    search_fields = ('username', 'fullname', 'email')
+    list_filter = ('is_allowed', 'is_active', 'is_staff')
     readonly_fields = ('date_joined',)
     filter_horizontal = ()
     filter_vertical = ()
 
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'fullname', 'email','is_allowed','password1', 'password2')}
+        ),
+    )
+
     def save_model(self, request, obj, form, change):
-        if not change:
-            obj.set_password(obj.password)
+        if not change:  # Если создаем нового пользователя
+            obj.set_random_password_and_notify()
         obj.save()
 
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'fullname', 'role', 'is_allowed', 'is_active', 'is_staff')}),
+        (None, {'fields': ('username', 'password', 'fullname', 'email', 'is_allowed', 'is_active', 'is_staff')}),
         ('Дополнительные параметры', {'fields': ('date_joined',)}),
     )
 
