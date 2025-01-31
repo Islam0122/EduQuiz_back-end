@@ -3,6 +3,7 @@ from datetime import timedelta
 from pathlib import Path
 from django.utils import timezone
 from .env_reader import env
+from datetime import timedelta
 
 
 SECRET_KEY = env('SECRET_KEY')
@@ -10,7 +11,6 @@ SECRET_KEY = env('SECRET_KEY')
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 PRODUCTION = True
-
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
 
     # > apps <
+    'app.User',
     'app.quiz'
 
 ]
@@ -64,13 +65,11 @@ TEMPLATES = [
 ]
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 
 USE_TZ = True
 
@@ -82,7 +81,20 @@ MEDIA_ROOT = BASE_DIR.joinpath("media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'User.User'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+}
 from .cors import *
 
 if not PRODUCTION:
@@ -93,5 +105,3 @@ else:
 # if DEBUG:
 #     INTERNAL_IPS = ['127.0.0.1','localhost',]
 #     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
-
-
