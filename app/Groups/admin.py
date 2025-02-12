@@ -5,7 +5,7 @@ class StudentInline(admin.TabularInline):
     model = Student
     extra = 1
     fields = ('full_name','group', 'is_active', 'create_user')
-    readonly_fields = ('created_at', 'updated_at', 'create_user')
+    readonly_fields = ('created_at', 'updated_at',)
 
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at', 'updated_at', 'create_user')
@@ -21,7 +21,7 @@ class GroupAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    readonly_fields = ('created_at', 'updated_at', 'create_user')
+    readonly_fields = ('created_at', 'updated_at',)
     inlines = [StudentInline]
 
 admin.site.register(Group, GroupAdmin)
