@@ -4,7 +4,7 @@ from .models import *
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ('id', 'full_name', 'is_active', 'created_at', 'updated_at', 'create_user')
+        fields = ('id', 'full_name', 'is_active','group', 'created_at', 'updated_at', 'create_user')
         read_only_fields = ('created_at', 'updated_at', 'create_user')
 
     def create(self, validated_data):
@@ -22,7 +22,7 @@ class StudentSerializer(serializers.ModelSerializer):
 class StudentInlineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ('id', 'full_name', 'is_active', 'created_at', 'updated_at')
+        fields = ('id', 'full_name','group','is_active', 'created_at', 'updated_at')
         read_only_fields = ('created_at', 'updated_at')
 
 class GroupSerializer(serializers.ModelSerializer):

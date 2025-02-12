@@ -38,6 +38,7 @@ class Group(BaseModel):
         return self.name
 
 class Student(BaseModel):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='students')
     full_name = models.CharField(
         max_length=150,
         verbose_name='ФИО студента',
