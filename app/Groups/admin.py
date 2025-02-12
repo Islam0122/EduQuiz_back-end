@@ -4,7 +4,7 @@ from .models import Group, Student
 class StudentInline(admin.TabularInline):
     model = Student
     extra = 1
-    fields = ('full_name', 'group', 'is_active', 'create_user')
+    fields = ('full_name','group', 'is_active', 'create_user')
     readonly_fields = ('created_at', 'updated_at', 'create_user')
 
 class GroupAdmin(admin.ModelAdmin):
