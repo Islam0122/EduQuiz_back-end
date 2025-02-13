@@ -16,12 +16,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
-    def get_queryset(self):
-        queryset = Group.objects.all()
-        user = self.request.query_params.get('user', None)
-        if user is not None:
-            queryset = queryset.filter(create_user=user)
-        return queryset
+
     def perform_create(self, serializer):
         serializer.save(create_user=self.request.user)
     def list(self, request, *args, **kwargs):
