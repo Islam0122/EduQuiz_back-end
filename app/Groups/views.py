@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import permissions
-from .models import *
-from .serializers import *
+from .models import Student, Group
+from .serializers import StudentSerializer, GroupSerializer
 
 class StudentViewSet(viewsets.ModelViewSet):
     queryset = Student.objects.all()
@@ -19,10 +19,3 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(create_user=self.request.user)
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        return response
-    def retrieve(self, request, *args, **kwargs):
-        group = self.get_object()
-        return super().retrieve(request, *args, **kwargs)
-
