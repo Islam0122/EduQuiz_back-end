@@ -10,7 +10,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-PRODUCTION = True
+PRODUCTION = False
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -89,13 +89,15 @@ REST_FRAMEWORK = {
     ],
 }
 
+
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
 }
+
 from .cors import *
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
