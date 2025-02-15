@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
     def save_model(self, request, obj, form, change):
-        if not change:  # Если создаем нового пользователя
+        if not change:
             obj.set_random_password_and_notify()
         obj.save()
 
