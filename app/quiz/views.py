@@ -1,15 +1,26 @@
-from rest_framework import viewsets
-from .models import Category, Question
-from .serializers import CategorySerializer, QuestionSerializer
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
+from .models import Topic, Question
+from .serializers import TopicSerializer, QuestionSerializer
 
 
-# Вьюсет для работы с категориями
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+class TopicViewSet(ModelViewSet):
+    """ViewSet для тем"""
+    queryset = Topic.objects.all()
+    serializer_class = TopicSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        """Автоматически устанавливает текущего пользователя как создателя темы"""
+        serializer.save(create_user=self.request.user)
 
 
-# Вьюсет для работы с вопросами
-class QuestionViewSet(viewsets.ModelViewSet):
+class QuestionViewSet(ModelViewSet):
+    """ViewSet для вопросов"""
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        """Автоматически устанавливает текущего пользователя как создателя вопроса"""
+        serializer.save(create_user=self.request.user)

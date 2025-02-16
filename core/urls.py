@@ -8,7 +8,8 @@ from rest_framework.routers import DefaultRouter
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('api/v1/', include('app.User.urls')),
-                  path('api/v1/', include('app.Groups.urls'))
+                  path('api/v1/', include('app.Groups.urls')),
+                  path('api/v1/', include('app.quiz.urls'))
               ] + urls_swagger
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

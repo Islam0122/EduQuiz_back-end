@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CategoryViewSet, QuestionViewSet
+from .views import TopicViewSet, QuestionViewSet
 
-# Создаем роутер
+
 router = DefaultRouter()
-router.register(r'categories', CategoryViewSet)  # Регистрируем вьюсет для категорий
-router.register(r'questions', QuestionViewSet)  # Регистрируем вьюсет для вопросов
+router.register(r'topics', TopicViewSet)  # /api/topics/
+router.register(r'questions', QuestionViewSet)  # /api/questions/
 
+# Добавляем маршруты в urlpatterns
 urlpatterns = [
-    path('', include(router.urls)),  # Включаем маршруты в основной файл URL
+    path('', include(router.urls)),  # Включаем все маршруты
 ]
