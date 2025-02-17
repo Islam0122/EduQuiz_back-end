@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     # > apps <
     'app.User',
     'app.Groups',
-    'app.quiz'
+    'app.quiz',
+    'app.Video'
 
 ]
 # MIDDLEWARE
