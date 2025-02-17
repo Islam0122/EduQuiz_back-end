@@ -8,7 +8,7 @@ class VideoAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     fieldsets = (
         (None, {
-            'fields': ('title', 'video_url', 'description', 'is_active')
+            'fields': ('title', 'video_url',  'is_active')
         }),
         ('Дополнительная информация', {
             'fields': ('created_at',),
