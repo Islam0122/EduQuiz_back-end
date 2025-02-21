@@ -34,8 +34,7 @@ class User(AbstractUser):
 
         Если возникнут вопросы, мы всегда на связи. 🤝
 
-        С уважением,  
-        Команда ClubOfProgg 🚀
+        С уважением,  Duishobaev Islam (duishobaevislam01@gmail.com)🚀
         '''
         send_mail(subject, message, 'duishobaevislam01@gmail.com', [self.email])
 
