@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     'app.User',
     'app.Groups',
     'app.quiz',
-    'app.Video'
+    'app.Video',
+    'app.main'
 
 ]
 # MIDDLEWARE
@@ -118,3 +119,4 @@ else:
 # if DEBUG:
 #     INTERNAL_IPS = ['127.0.0.1','localhost',]
 #     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+

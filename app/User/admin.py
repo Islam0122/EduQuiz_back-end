@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
+from django.contrib.auth.models import Group
+from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'fullname', 'email', 'is_allowed',)
@@ -13,7 +15,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'fullname', 'email','is_allowed','password1', 'password2')}
+            'fields': ('username', 'fullname', 'email', 'is_allowed', 'password1', 'password2')}
         ),
     )
 
@@ -23,8 +25,13 @@ class CustomUserAdmin(UserAdmin):
         obj.save()
 
     fieldsets = (
-        (None, {'fields': ('username', 'password', 'fullname', 'email', 'is_allowed', 'is_active', 'is_staff')}),
+        (None, {'fields': ('username', 'password', 'fullname', 'email', 'is_allowed', 'is_active', 'is_staff')}),  # Убираем 'groups'
         ('Дополнительные параметры', {'fields': ('date_joined',)}),
     )
 
+# Регистрируем модель с одним кастомным админом
 admin.site.register(User, CustomUserAdmin)
+admin.site.unregister(Group)
+admin.site.unregister(OutstandingToken)
+admin.site.unregister(BlacklistedToken)
+
