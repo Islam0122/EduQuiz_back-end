@@ -25,5 +25,5 @@ class Video(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = "Полезное видео"
-        verbose_name_plural = "Полезные видео"
+        verbose_name = "Видео"
+        verbose_name_plural = "Видео"

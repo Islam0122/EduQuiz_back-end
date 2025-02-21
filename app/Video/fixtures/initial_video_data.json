@@ -1,0 +1,52 @@
+[
+  {
+    "model": "Video.Video",
+    "pk": 1,
+    "fields": {
+      "title": "Как научиться программировать за 1 месяц",
+      "video_url": "https://www.youtube.com/watch?v=8errm5QnciA",
+      "created_at": "2025-02-21T00:00:00Z",
+      "is_active": true
+    }
+  },
+  {
+    "model": "Video.Video",
+    "pk": 2,
+    "fields": {
+      "title": "Основы Python для начинающих",
+      "video_url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+      "created_at": "2025-02-21T00:00:00Z",
+      "is_active": true
+    }
+  },
+  {
+    "model": "Video.Video",
+    "pk": 3,
+    "fields": {
+      "title": "Основы работы с VSCode",
+      "video_url": "https://www.youtube.com/watch?v=I6XkT0v30pM",
+      "created_at": "2025-02-21T00:00:00Z",
+      "is_active": true
+    }
+  },
+  {
+    "model": "Video.Video",
+    "pk": 4,
+    "fields": {
+      "title": "HTML для начинающих",
+      "video_url": "https://www.youtube.com/watch?v=UB1O30fR-EE",
+      "created_at": "2025-02-21T00:00:00Z",
+      "is_active": true
+    }
+  },
+  {
+    "model": "Video.Video",
+    "pk": 5,
+    "fields": {
+      "title": "CSS для начинающих",
+      "video_url": "https://www.youtube.com/watch?v=yfoY53QXEnI",
+      "created_at": "2025-02-21T00:00:00Z",
+      "is_active": true
+    }
+  }
+]
