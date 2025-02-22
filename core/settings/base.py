@@ -133,6 +133,8 @@ JAZZMIN_SETTINGS = {
             {"name": "Перейти на сайт", "url": "/", "icon": "fas fa-home", "permissions": []},
         ]
     },
+    "show_ui_builder": True,
+
 }
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
@@ -154,8 +156,8 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_compact_style": False,
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
-    "theme": "simplex",
-    "dark_mode_theme": None,
+    "theme": "litera",
+    "dark_mode_theme": "cyborg",
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",
