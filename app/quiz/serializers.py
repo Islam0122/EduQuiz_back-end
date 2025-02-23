@@ -5,8 +5,7 @@ from .models import Topic, Question
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = "__all__"
-        read_only_fields = ('create_user')
+        fields = ["id", "text","image", "option_a", "option_b", "option_c", "option_d", "correct_answer","topic"]
 
 
 class TopicSerializer(serializers.ModelSerializer):
