@@ -32,7 +32,7 @@ class BaseModel(models.Model):
 
     def save(self, *args, user=None, **kwargs):
         if not self.pk and user:  # Если запись создаётся впервые
-            self.create_user = user
+            self.created_by = user
             self.updated_user = user
         elif user:  # Если запись уже существует и обновляется
             self.updated_user = user
