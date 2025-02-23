@@ -6,6 +6,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = "__all__"
+        read_only_fields = ('create_user')
 
 
 class TopicSerializer(serializers.ModelSerializer):
