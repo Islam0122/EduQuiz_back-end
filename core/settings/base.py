@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'debug_toolbar',
+    'simple_history',
 
     # > apps <
     'app.User',
@@ -49,6 +50,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
+SIMPLE_HISTORY = {
+    'USE_IN_MIGRATIONS': True,
+}
 
 ROOT_URLCONF = 'core.urls'
 

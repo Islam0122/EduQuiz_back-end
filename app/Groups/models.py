@@ -1,5 +1,7 @@
 from django.db import models
 from app.User.models import User
+from simple_history.models import HistoricalRecords
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(
@@ -12,15 +14,33 @@ class BaseModel(models.Model):
         verbose_name='Дата обновления',
         help_text='Дата и время последнего обновления записи.'
     )
-    create_user = models.ForeignKey(
+    created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name='Создатель записи',
         help_text='Пользователь, создавший эту запись.'
     )
+    updated_user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='updated_%(class)s_set',
+        verbose_name='Последний изменивший',
+        help_text='Пользователь, последний изменивший эту запись.'
+    )
+
+    def save(self, *args, user=None, **kwargs):
+        if not self.pk and user:  # Если запись создаётся впервые
+            self.create_user = user
+            self.updated_user = user
+        elif user:  # Если запись уже существует и обновляется
+            self.updated_user = user
+        super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
+
 
 class Group(BaseModel):
     name = models.CharField(
@@ -28,6 +48,7 @@ class Group(BaseModel):
         verbose_name='Название группы',
         help_text='Введите название группы (до 150 символов).'
     )
+    history = HistoricalRecords()
 
     class Meta:
         db_table = 'groups'
@@ -36,6 +57,7 @@ class Group(BaseModel):
 
     def __str__(self):
         return self.name
+
 
 class Student(BaseModel):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='students')
@@ -49,6 +71,7 @@ class Student(BaseModel):
         verbose_name='Активность студента',
         help_text='Отметьте, если студент активен в системе.'
     )
+    history = HistoricalRecords()
 
     class Meta:
         db_table = 'students'
