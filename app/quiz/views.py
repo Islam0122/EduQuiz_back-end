@@ -21,9 +21,6 @@ class TopicViewSet(ModelViewSet):
     serializer_class = TopicSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        """Автоматически устанавливает текущего пользователя как создателя темы"""
-        serializer.save(create_user=self.request.user)
 
 
 class QuestionViewSet(ModelViewSet):
@@ -32,6 +29,4 @@ class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        """Автоматически устанавливает текущего пользователя как создателя вопроса"""
-        serializer.save(create_user=self.request.user)
+

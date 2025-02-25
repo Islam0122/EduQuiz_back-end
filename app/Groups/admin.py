@@ -55,7 +55,7 @@ class StudentAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         """Автоматически устанавливаем create_user и updated_user"""
         if not obj.pk:  # Если запись создаётся впервые
-            obj.create_user = request.user
+            obj.created_by = request.user
         obj.updated_user = request.user
         super().save_model(request, obj, form, change)
 
