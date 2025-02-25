@@ -60,7 +60,7 @@ class Question(BaseModel):
     topic = models.ForeignKey(
         Topic, on_delete=models.CASCADE, related_name="questions", verbose_name="Тема"
     )
-    image = models.URLField(null=True, blank=True, verbose_name="Ссылка на изображение")
+    image = models.ImageField(upload_to='questions_images/', null=True, blank=True, verbose_name="Изображение")
     text = models.TextField(verbose_name="Текст вопроса")
 
     option_a = models.CharField(max_length=255, verbose_name="Вариант A")
