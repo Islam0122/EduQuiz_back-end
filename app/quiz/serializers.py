@@ -9,20 +9,26 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user  # Получаем текущего пользователя из контекста
-        question = Question.objects.create(created_by=user, updated_user=user, **validated_data)
+        question = Question.objects.create(
+            created_by=user, updated_user=user, **validated_data
+        )
         return question
 
     def update(self, instance, validated_data):
         user = self.context['request'].user
+
         instance.text = validated_data.get('text', instance.text)
         instance.option_a = validated_data.get('option_a', instance.option_a)
         instance.option_b = validated_data.get('option_b', instance.option_b)
         instance.option_c = validated_data.get('option_c', instance.option_c)
         instance.option_d = validated_data.get('option_d', instance.option_d)
         instance.correct_answer = validated_data.get('correct_answer', instance.correct_answer)
+        instance.topic = validated_data.get('topic', instance.topic)  # Обновление topic
+        instance.image = validated_data.get('image', instance.image)  # Обновление изображения
         instance.updated_user = user
         instance.save()
         return instance
+
 
 
 
