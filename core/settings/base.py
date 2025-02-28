@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'app.Groups',
     'app.quiz',
     'app.Video',
-    'app.main'
+    'app.main',
+    'app.Typing'
 
 ]
 # MIDDLEWARE
