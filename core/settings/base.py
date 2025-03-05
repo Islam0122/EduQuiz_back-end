@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'app.quiz',
     'app.Video',
     'app.main',
-    'app.Typing'
+    'app.Typing',
+    'app.BotUser'
 
 ]
 # MIDDLEWARE
