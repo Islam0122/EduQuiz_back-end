@@ -12,7 +12,6 @@ urlpatterns = [
                   path('api/v1/', include('app.quiz.urls')),
                   path('api/v1/', include('app.Video.urls')),
                   path('api/v1/', include('app.Typing.urls')),
-                  path('api/v1/', include('app.BotUser.urls')),
               ] + urls_swagger
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -36,8 +36,6 @@ INSTALLED_APPS = [
     'app.Video',
     'app.main',
     'app.Typing',
-    'app.BotUser'
-
 ]
 # MIDDLEWARE
 MIDDLEWARE = [
