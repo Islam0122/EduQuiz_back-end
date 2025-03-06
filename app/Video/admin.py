@@ -14,13 +14,13 @@ class VideoCategoryAdmin(admin.ModelAdmin):
 admin.site.register(VideoCategory, VideoCategoryAdmin)
 
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'video_url', 'created_at', 'is_active')
+    list_display = ('title', 'video_url','video_category', 'created_at', 'is_active')
     search_fields = ('title', 'video_url', 'description')  # Теперь ищем по полю description
     list_filter = ('created_at', 'is_active')
     ordering = ('-created_at',)
     fieldsets = (
         (None, {
-            'fields': ('title', 'description', 'video_url', 'is_active')  # Добавили description
+            'fields': ('title', 'description','video_category', 'video_url', 'is_active')  # Добавили description
         }),
         ('Дополнительная информация', {
             'fields': ('created_at',),
