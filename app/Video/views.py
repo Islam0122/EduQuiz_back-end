@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Video
-from .serializers import VideoSerializer
+from .models import Video, VideoCategory
+from .serializers import VideoSerializer, VideoCategorySerializer
 
 class VideoListView(APIView):
     def get(self, request):
@@ -18,4 +18,22 @@ class VideoDetailView(APIView):
             return Response({"detail": "Видео не найдено."}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = VideoSerializer(video)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class VideoCategoryListView(APIView):
+    def get(self, request):
+        categories = VideoCategory.objects.all()
+        serializer = VideoCategorySerializer(categories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class VideoCategoryDetailView(APIView):
+    def get(self, request, pk):
+        try:
+            category = VideoCategory.objects.get(pk=pk)
+        except VideoCategory.DoesNotExist:
+            return Response({"detail": "Категория не найдена."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = VideoCategorySerializer(category)
         return Response(serializer.data, status=status.HTTP_200_OK)
