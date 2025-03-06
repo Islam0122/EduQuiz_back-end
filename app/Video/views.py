@@ -6,9 +6,14 @@ from .serializers import VideoSerializer, VideoCategorySerializer
 
 class VideoListView(APIView):
     def get(self, request):
+        category_title = request.query_params.get('category')
         videos = Video.objects.filter(is_active=True)
+        if category_title:
+            videos = videos.filter(video_category__title__icontains=category_title)
+
         serializer = VideoSerializer(videos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class VideoDetailView(APIView):
     def get(self, request, pk):
