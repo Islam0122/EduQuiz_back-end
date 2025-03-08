@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import filters
 from .models import Timer, Category, Text
 from .serializers import TimerSerializer, CategorySerializer, TextSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 class TimerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Timer.objects.all()
@@ -18,5 +19,6 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 class TextViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Text.objects.all()
     serializer_class = TextSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['text_content']
+    filterset_fields = ['category']
