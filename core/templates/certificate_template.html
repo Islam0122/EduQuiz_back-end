@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @font-face {
+            font-family: 'DejaVu Sans';
+            src: url('static/fonts/DejaVuSans.ttf') format('truetype'); /* Убедитесь, что путь правильный */
+        }
+
+        body {
+            font-family: 'DejaVu Sans', sans-serif;
+            text-align: center;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .result {
+            font-weight: bold;
+            font-size: 22px;
+            margin-top: 20px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>СЕРТИФИКАТ</h1>
+<p>Настоящим подтверждается, что</p>
+<p class="bold">{{ name }}</p>
+<p>успешно прошел(а) тест по теме:</p>
+<p class="bold">{{ topic }}</p>
+<p class="result">Результат: {{ percentage }}% ({{ correct_answers }} из {{ total_questions }})</p>
+<p class="footer">Дата прохождения: {{ date }}</p>
+</body>
+</html>

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'app.Video',
     'app.main',
     'app.Typing',
+    'app.Results'
 ]
 # MIDDLEWARE
 MIDDLEWARE = [
@@ -72,6 +73,7 @@ TEMPLATES = [
         },
     },
 ]
+
 WSGI_APPLICATION = 'core.wsgi.application'
 
 LANGUAGE_CODE = 'ru'
