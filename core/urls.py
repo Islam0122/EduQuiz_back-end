@@ -13,6 +13,7 @@ urlpatterns = [
                   path('api/v1/', include('app.Video.urls')),
                   path('api/v1/', include('app.Typing.urls')),
                   path('api/v1/', include('app.Results.urls')),
+                  path('api/v1/', include('app.OTP.urls')),
               ] + urls_swagger
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

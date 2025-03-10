@@ -6,6 +6,8 @@ from django.core.files.base import ContentFile
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 from app.quiz.models import Topic
+from django.core.mail import EmailMessage
+from django.conf import settings
 
 
 class ResultsTest(models.Model):
@@ -30,9 +32,8 @@ class ResultsTest(models.Model):
 
 
 @receiver(post_save, sender=ResultsTest)
-def generate_certificate(sender, instance, created, **kwargs):
+def generate_certificate_and_send_email(sender, instance, created, **kwargs):
     if created and not instance.certificate:
-        # Создание контекста для шаблона
         context = {
             'name': instance.name,
             'topic': instance.topic.name,
@@ -41,18 +42,42 @@ def generate_certificate(sender, instance, created, **kwargs):
             'total_questions': instance.total_questions,
             'date': instance.created_at.strftime('%d-%m-%Y'),
         }
-
-        # Рендерим HTML из шаблона
         html_string = render_to_string('certificate_template.html', context)
-
-        # Генерация PDF из HTML с помощью xhtml2pdf
         pdf_file = BytesIO()
         pisa_status = pisa.CreatePDF(html_string, dest=pdf_file)
 
         if pisa_status.err:
             print("Ошибка при генерации PDF")
-
-        # Сохранение PDF в поле certificate
         pdf_file.seek(0)
         filename = f"certificate_{instance.id}.pdf"
         instance.certificate.save(filename, ContentFile(pdf_file.read()))
+        email_subject = 'Ваш сертификат за прохождение теста'
+
+        email_body = f"""
+        Здравствуйте, {instance.name}!
+
+        Поздравляем вас с успешным завершением теста по теме "{instance.topic.name}"! 🎉
+
+        Мы рады сообщить, что ваш сертификат готов и прикреплен к этому письму. Вы можете скачать его, нажав на файл.
+
+        Ваши результаты:
+        - Правильных ответов: {instance.correct_answers}
+        - Неправильных ответов: {instance.wrong_answers}
+        - Процент правильных ответов: {instance.percentage}%
+
+        Если у вас возникнут вопросы, не стесняйтесь обращаться к нам.
+
+        С наилучшими пожеланиями,
+        Ислам Дуйшобаев(duishobaevislam01@gmail.com)
+        """
+
+        email = EmailMessage(
+            subject=email_subject,
+            body=email_body,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[instance.email],
+        )
+        email.attach(filename, pdf_file.read(), 'application/pdf')
+        email.send()
+
+

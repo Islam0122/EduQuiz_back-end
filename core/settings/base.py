@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'app.Video',
     'app.main',
     'app.Typing',
-    'app.Results'
+    'app.Results',
+    'app.OTP'
 ]
 # MIDDLEWARE
 MIDDLEWARE = [
