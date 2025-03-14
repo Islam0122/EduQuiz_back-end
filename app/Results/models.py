@@ -3,11 +3,14 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from io import BytesIO
 from django.core.files.base import ContentFile
-from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 from app.quiz.models import Topic
 from django.core.mail import EmailMessage
 from django.conf import settings
+import logging
+from weasyprint import HTML
+
+logger = logging.getLogger(__name__)
 
 
 class ResultsTest(models.Model):
@@ -42,17 +45,21 @@ def generate_certificate_and_send_email(sender, instance, created, **kwargs):
             'total_questions': instance.total_questions,
             'date': instance.created_at.strftime('%d-%m-%Y'),
         }
-        html_string = render_to_string('certificate_template.html', context)
-        pdf_file = BytesIO()
-        pisa_status = pisa.CreatePDF(html_string, dest=pdf_file)
 
-        if pisa_status.err:
-            print("Ошибка при генерации PDF")
+        # Рендеринг HTML
+        html_string = render_to_string('certificate_template.html', context)
+
+        # Генерация PDF с помощью WeasyPrint
+        pdf_file = BytesIO()
+        HTML(string=html_string, base_url=settings.BASE_DIR).write_pdf(pdf_file)
+
         pdf_file.seek(0)
         filename = f"certificate_{instance.id}.pdf"
-        instance.certificate.save(filename, ContentFile(pdf_file.read()))
-        email_subject = 'Ваш сертификат за прохождение теста'
+        pdf_content = pdf_file.read()
+        instance.certificate.save(filename, ContentFile(pdf_content))
 
+        # Отправка письма
+        email_subject = 'Ваш сертификат за прохождение теста'
         email_body = f"""
         Здравствуйте, {instance.name}!
 
@@ -71,13 +78,16 @@ def generate_certificate_and_send_email(sender, instance, created, **kwargs):
         Ислам Дуйшобаев(duishobaevislam01@gmail.com)
         """
 
-        email = EmailMessage(
-            subject=email_subject,
-            body=email_body,
-            from_email=settings.EMAIL_HOST_USER,
-            to=[instance.email],
-        )
-        email.attach(filename, pdf_file.read(), 'application/pdf')
-        email.send()
+        try:
+            email = EmailMessage(
+                subject=email_subject,
+                body=email_body,
+                from_email=settings.EMAIL_HOST_USER,
+                to=[instance.email],
+            )
+            email.attach(filename, pdf_content, 'application/pdf')
+            email.send()
+        except Exception as e:
+            logger.error(f"Ошибка при отправке письма: {e}")
 
-
+        pdf_file.close()
