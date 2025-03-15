@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 import logging
 from weasyprint import HTML
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +52,8 @@ def generate_certificate_and_send_email(sender, instance, created, **kwargs):
 
         # Генерация PDF с помощью WeasyPrint
         pdf_file = BytesIO()
-        HTML(string=html_string, base_url=settings.BASE_DIR).write_pdf(pdf_file)
+        base_url = f'file://{os.path.join(settings.BASE_DIR, "core", "static")}/'
+        HTML(string=html_string, base_url=base_url).write_pdf(pdf_file)
 
         pdf_file.seek(0)
         filename = f"certificate_{instance.id}.pdf"
