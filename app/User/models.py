@@ -2,6 +2,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
+
 
 class User(AbstractUser):
     fullname = models.CharField(max_length=255, verbose_name="Полное имя")
@@ -15,28 +18,44 @@ class User(AbstractUser):
 
         self.send_welcome_email(password)  # Отправляем email пользователю
 
+
     def send_welcome_email(self, password):
         """Отправляет email пользователю с данными для входа"""
         if not self.email:
             return  # Если email нет, не отправляем письмо
 
-        subject = 'Добро пожаловать в нашу систему!'
-        message = f'''
-        Привет, {self.username}! 👋
+        subject = 'Добро пожаловать в EduQuiz!'
 
-        Мы рады приветствовать вас в нашей системе! 🎉
+        html_message = f'''
+        <h2>Привет, {self.username}! 👋</h2>
 
-        Ваши данные для входа:
-        🔑 Логин: {self.username}
-        🔐 Пароль: {password}
+        <p>Мы рады приветствовать вас в системе <b>EduQuiz</b>! 🎉</p>
 
-        ⚠️ Не передавайте эти данные третьим лицам!
+        <p><b>Ваши данные для входа:</b></p>
+        <ul>
+            <li><b>Логин:</b> {self.username}</li>
+            <li><b>Пароль:</b> {password}</li>
+        </ul>
 
-        Если возникнут вопросы, мы всегда на связи. 🤝
+        <p>🔗 <a href="https://t.me/+1zXVUPd6-g9kODQy">Наш канал для получения результатов</a></p>
 
-        С уважением,  Duishobaev Islam (duishobaevislam01@gmail.com)🚀
+        <p style="color: red;"><b>⚠️ Не передавайте эти данные третьим лицам!</b></p>
+
+        <p>Если возникнут вопросы, мы всегда на связи. 🤝</p>
+
+        <p>С уважением,<br>
+        Duishobaev Islam (<a href="mailto:duishobaevislam01@gmail.com">duishobaevislam01@gmail.com</a>) 🚀</p>
         '''
-        send_mail(subject, message, 'duishobaevislam01@gmail.com', [self.email])
+
+        plain_message = strip_tags(html_message)  # Удаляем HTML теги для обычной версии
+
+        send_mail(
+            subject=subject,
+            message=plain_message,  # Обычная версия
+            from_email='duishobaevislam01@gmail.com',
+            recipient_list=[self.email],
+            html_message=html_message  # HTML-версия
+        )
 
     class Meta:
         verbose_name = "Пользователь"
