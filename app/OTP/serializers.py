@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from .models import OTP
 from django.core.exceptions import ValidationError
-
+from .models import OTP
 
 class OTPSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +13,7 @@ class OTPSerializer(serializers.ModelSerializer):
         if not otp_records.exists():
             raise ValidationError("OTP для данного email не найден.")
 
-        otp = otp_records.first()  # Берем самый последний OTP
+        otp = otp_records.first()
         if not otp.is_valid():
             raise ValidationError("OTP истек.")
 
@@ -22,4 +21,3 @@ class OTPSerializer(serializers.ModelSerializer):
             raise ValidationError("Неверный OTP код.")
 
         return value
-

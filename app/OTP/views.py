@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import OTPSerializer
 from .utils import send_otp_email
-from django.core.exceptions import ValidationError
 
 class SendOTPView(APIView):
     def post(self, request, *args, **kwargs):

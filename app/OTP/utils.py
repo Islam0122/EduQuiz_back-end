@@ -1,12 +1,11 @@
-# utils.py
+import secrets
+import string
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import OTP
-import random
-import string
 
 def generate_otp():
-    return ''.join(random.choices(string.digits, k=6))
+    return ''.join(secrets.choice(string.digits) for _ in range(6))
 
 def send_otp_email(user_email):
     otp_code = generate_otp()
@@ -17,11 +16,13 @@ def send_otp_email(user_email):
 
     subject = 'Ваш OTP код для подтверждения email'
     message = f"Ваш OTP код для подтверждения email: {otp_code}"
-    send_mail(
-        subject,
-        message,
-        settings.EMAIL_HOST_USER,
-        [user_email],
-        fail_silently=False,
-    )
-
+    try:
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [user_email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        raise Exception(f"Ошибка при отправке email: {str(e)}")
